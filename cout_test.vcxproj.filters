@@ -15,15 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="cout_test.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="gbd.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="qu.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="gssp.cpp">
       <Filter>源文件</Filter>
     </ClCompile>

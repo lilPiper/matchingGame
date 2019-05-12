@@ -151,10 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="cout_test.cpp" />
-    <ClCompile Include="gbd.cpp" />
     <ClCompile Include="gssp.cpp" />
-    <ClCompile Include="qu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gssp.h" />

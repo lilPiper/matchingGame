@@ -1,32 +1,26 @@
-
-//vector<vector<int> > array(m); 
-//这个m一定不能少
-////初始化一个m*n的二维数组
-//for (int i = 0; i < m; i++) {
-//	array[i].resize(n);
-//}
-
-
-
 //加 SCORE/LEVEL
-//加排行榜
-//随机数修改
-#include<iostream>
-#include<vector>
+//#include "gssp.h"
+#include <iostream>
+#include <vector>
 #define MXH 6
 #define MXL 6
-#include<ctime>
-using namespace std;
+#include <ctime>
+
+//using namespace std;
 typedef int Pos;
 typedef int WTNum;
 typedef int ScoreN;
+typedef long int ScoreLN;
+typedef int RNum;
 class AIn {
 	friend class Fun;
 private:
-	WTNum water; //滴管毫升数？？
+	WTNum water; //滴管毫升数
 	Pos p_l, p_h;
-	vector< vector<int > > arr; //对象成员，用二维向量实现水滴的存储
-	ScoreN Plus; 
+	std::vector< std::vector<int > > arr; //对象成员，用二维向量实现水滴的存储
+	ScoreN Plus;
+	ScoreLN sumSc;
+	RNum round;
 	static AIn* m_pInstance;
 	AIn() = delete;
 	AIn(int x):arr(MXH) {
@@ -39,7 +33,8 @@ private:
 		p->p_l = 0;
 		p->p_h = 0;
 		p->Plus = 0;
-
+		p->sumSc = 0;
+		
 	}
 public:
 	//static AIn* m_pInstance = nullptr;
@@ -56,19 +51,22 @@ public:
 	}
 
 	bool setPos() {
-	
+		std::cout << "Please enter positions:x,y"<<std::endl;
+		std::cout << "中间以一个任意符号分隔"<<std::endl;
 		std::cin.clear();
 		std::cin.sync();
 		Pos tpx = 0, tpy = 0;
-		char c;
+		char c = '\0';
 		std::cin >> tpx>> c >> tpy;
-
-		while (tpx <= 0 || tpy <= 0 || tpx > MXL || tpy > MXH) {
+		
+		while (tpx <= 0 || tpy <= 0 || tpx > MXL || tpy > MXH ) {
 			std::cout << "Position error,please try again!\n"<<std::endl;
 			std::cin.clear();
 			std::cin.sync();
-			tpx = 0, tpy = 0;
+			tpx = 0, c = '\0' , tpy = 0;
+			std::cin.ignore(1024, '\n');
 			std::cin >> tpx>> c >> tpy;
+			
 			
 		}
 			
@@ -84,31 +82,36 @@ public:
 	}
 	void getArrSizeAndScr() {
 		//输出二维数组的行和列 
-		cout <<"Total Score:"<<Plus<< " Row:" << arr.size() << "  Column:" << arr[0].size() << endl;
+		std::cout << "YOUR Level:" << round;
+		std::cout <<"Total Score:"<<sumSc<< " Row:" << arr.size() << "  Column:" << arr[0].size() << std::endl;
 
 	}
 	void dispArr() {
 		//输出二维数组 
-		cout << "[" << endl;
+		std::cout << "[" << std::endl;
 		for (int j = 0; j < arr.size(); j++) {
-			cout << "[" << " ";
+			std::cout << "[" << " ";
 			for (int k = 0; k < arr[0].size(); k++) {
-				cout << arr[j][k] << " ";
+				std::cout << arr[j][k] << " ";
 			}
-			cout << "]" << endl;
+			std::cout << "]" << std::endl;
 		}
-		cout << "]" << endl;
+		std::cout << "]" << std::endl;
 
-		cout <<"(("<< Plus <<"))"<< endl;
+		std::cout <<"(("<< Plus <<"))"<< std::endl;
 	}
 	bool AddArrN(Pos x,Pos y) {
-		arr[x][y] ++;
+		arr[y - 1][x - 1] ++;
 		return true;
 	}
 	bool setPlusZ() {
 		Plus = 0;
 		return true;
-	}
+	};
+	bool SumPlus() {
+		sumSc += Plus;
+		return true;
+	};
 	ScoreN getPlus() {
 		return Plus;
 	}
@@ -128,18 +131,21 @@ public:
 	bool setPos(Pos l,Pos h){
 		return true;
 	}
+	void setRoundZ()
+	{
+		round = 0;
+	}
+	bool roundAdd() {
+		round += 1;
+		return true;
+	}
 	~AIn() {
 		if (m_pInstance)
 			delete m_pInstance;
 		m_pInstance = nullptr;
 	}
 };
-//class A{
-//vector<vector<int> > arr;
-//A():arr(6) {
-//	
-//}
-//};
+
 
 class Fun {
 
@@ -152,16 +158,18 @@ public:
 			for (int c = 0; c < MXL; c++)
 			{
 			
-				//p->arr[z][c] = //书签
-				p->arr[z][c] = rand() % 4;//固定一盘，便于测试
+				//p->arr[z][c] = 
+				p->arr[z][c] = rand() % 4;//随机产生布局
+				//若固定一盘，则便于测试
 			}
 	}
 	void Tvs(Pos x , Pos y ) {
 		AIn* p = AIn::GetInstance();
-		/*p->p_l;
-		p->p_h;*/
+		//int i;
+		p->p_l;
+		p->p_h;
 		p->Plus++;
-		std::cout << "\n读入了" << "pos[" << x << "][" << y << "]" << "\n" << std::endl;
+		//std::cout << "\n读入了" << "pos[" << x << "][" << y << "]" << "\n" << std::endl;
 		if (p->arr[y - 1][x - 1] > 3) {
 			p->arr[y - 1][x - 1] = 0;
 			//向上
@@ -173,7 +181,7 @@ public:
 				}
 			}
 			//向下
-			for (int i = y; i < MXH; i += 1) {
+			for (int i = y; i < MXH; i ++) {
 				if (p->arr[i][x - 1] != 0) {
 					p->arr[i][x - 1] += 1;
 					Tvs(x, i + 1);
@@ -189,7 +197,7 @@ public:
 				}
 			}
 			//向右
-			for (int i = x; i < MXL; i += 1) {
+			for (int i = x; i < MXL; i ++) {
 				if (p->arr[y - 1][i] != 0) {
 					p->arr[y - 1][i] += 1;
 					Tvs(i + 1, y);
@@ -197,6 +205,7 @@ public:
 				}
 			}
 		}
+		
 	};
 
 	//void Tvs(Pos tl = -1,Pos th = -1) {
@@ -253,8 +262,8 @@ public:
 	//判断全局是否需要重新生成
 	bool isGameOver(AIn* p) {
 		int flg = 0;
-		for (int m = 0; m < MXH; m += 1) {
-			for (int n = 0; n < MXL; n += 1) {
+		for (int m = 0; m < MXH; m++) {
+			for (int n = 0; n < MXL; n++) {
 				if (p->arr[m][n] != 0) {
 					flg ++;
 				}
@@ -262,8 +271,12 @@ public:
 		}
 		if (0 == flg) {
 			AIn::createAIn(p);
-			//firstSetMap();
-			
+			std::cout << "CONGRATULATIONS!" << std::endl;
+			std::cout << "Level "<<p->round<<" completed!" << std::endl;
+			srand((unsigned)time(NULL));
+			firstSetMap();
+			p->dispArr();
+			p->roundAdd();
 			return true;
 		}
 		else
@@ -272,45 +285,49 @@ public:
 };
 
 	AIn * AIn::m_pInstance = nullptr;
-int main() {
-	srand((unsigned)time(NULL));
-	/*vector<vector<int> > arr(MXH);
-	for (int i = 0; i < MXH; i++) {
-		arr[i].resize(MXL);
-	}*/
 
+int main() {
+
+	//随机数种子
+	srand((unsigned)time(NULL));
+	
 	//单例模式创建
 	AIn * pSc = AIn::GetInstance();
 	Fun opt;
 
-	pSc->dispArr();
-	opt.firstSetMap();
+	//pSc->dispArr();
+	opt.firstSetMap();//布局
+
 	std::cout << "按任意键开始游戏\n" << std::endl;
 	system("pause");
 
+	pSc->dispArr();
+	pSc->setRoundZ();//级别初始化
 	for (; pSc->getWater() > 0 && pSc->getWater() < 100;)
 	{
 		if (pSc->AIn::setPos())
 		{
+			//pSc->AIn::setPos();
 			Pos pgx = pSc->getPosX(), pgy = pSc->getPosY();
 			/*std::cout << "AAA";*/
-			pSc->AddArrN(pgy - 1, pgx - 1);
-				/*Arr[pgx - 1][pgy - 1] ++;*/
-			pSc->setWater(-1);
-			pSc->setPlusZ();
-			opt.Tvs(pgy, pgx);
-			if (pSc->getPlus() >= 2)
-				pSc->setWater(1);
+			pSc->AddArrN(pgx, pgy); //水滴
 
+			pSc->setWater(-1);
+			pSc->SumPlus();
+			pSc->setPlusZ();
+			opt.Tvs(pgx, pgy);
+			if (pSc->getPlus() >= 2){
+				pSc->setWater(1);
+			}
 			pSc->dispArr();
 			std::cout << "water=" << pSc->getWater() << std::endl;
 			opt.isGameOver(pSc);
 		}
 	}
-	if (pSc->getWater() <= 0)
-		std::cout << "You are failed!" << std::endl;
+	 if(pSc->getWater() <= 0)
+		std::cout << "You are failed. Try again, YOU CAN DO IT!" << std::endl;
 	if (pSc->getWater() >= 100)
-		std::cout << "You win!" << std::endl;
+		std::cout << "You win!$:*.`★* ." << std::endl;
 	
 
 	pSc->getArrSizeAndScr();
@@ -320,6 +337,14 @@ int main() {
 	return 0;
 }
 
+
+
+
+
+    /*vector<vector<int> > arr(MXH);
+	for (int i = 0; i < MXH; i++) {
+		arr[i].resize(MXL);
+	}*/
 	////输出二维数组的行和列 
 	//cout << "Row:" << arr.size() << "  Column:" << arr[0].size() << endl;
 
@@ -333,3 +358,12 @@ int main() {
 	//	cout << "]" << endl;
 	//}
 	//cout << "]" << endl;
+
+
+
+//vector<vector<int> > array(m); 
+//这个m一定不能少
+////初始化一个m*n的二维数组
+//for (int i = 0; i < m; i++) {
+//	array[i].resize(n);
+//}

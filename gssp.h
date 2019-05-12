@@ -6,6 +6,7 @@
 typedef int Pos;
 typedef int WTNum;
 typedef int ScoreN;
+typedef long int ScoreLN;
 class AIn {
 	friend class Fun;
 private:
@@ -13,6 +14,7 @@ private:
 	Pos p_l, p_h;
 	//vector< vector<int > > arr;
 	ScoreN Plus;
+	ScoreLN sumSc;
 	static AIn* m_pInstance;
 	AIn() = delete;
 	//AIn(int x) :arr(MXH) {};
@@ -24,12 +26,13 @@ public:
 	Pos getPosX();
 	Pos getPosY();
 	void getArrSizeAndScr();
-			//输出二维数组 
+			//输出 
 	void dispArr();
 
 		
 	bool AddArrN(Pos x, Pos y);
 	bool setPlusZ();
+	bool SumPlus();
 	ScoreN getPlus();
 	WTNum getWater();
 	

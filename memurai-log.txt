@@ -1,0 +1,5 @@
+[4268] 10 May 18:08:17.121 # --- Memurai is starting ---
+[4268] 10 May 18:08:17.121 # Memurai Technical Preview version=1.0.8, API version=5.0.3, bits=64, pid=4268, just started
+[4268] 10 May 18:08:17.121 # This build will expire in 183 days
+[4268] 10 May 18:08:17.121 # Configuration loaded
+[4268] 10 May 18:08:17.131 # Could not create server TCP listening socket 127.0.0.1:6379: bind: Address already in use
