@@ -287,7 +287,8 @@ public:
 	AIn * AIn::m_pInstance = nullptr;
 
 int main() {
-
+	//ms-dos change color
+	//system("color b3");
 	//随机数种子
 	srand((unsigned)time(NULL));
 	
